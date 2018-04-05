@@ -1,25 +1,25 @@
 #!/bin/sh
 
 # Colors
-COLOR_BLUE='\033[0;34m'
-COLOR_YELLOW='\033[0;33m'
-NOCOLOR='\033[0m'
+HLWP_COLOR_BLUE='\033[0;34m'
+HLWP_COLOR_YELLOW='\033[0;33m'
+HLWP_COLOR_NONE='\033[0m'
+
+# Default config
+HLWP_WP_USER_DEFAULT='my_wp_user'
+HLWP_WP_PASSWORD_DEFAULT='thismightbeagoodpassword'
+HLWP_WP_EMAIL_DEFAULT='my_email@mywebsite.com'
+HLWP_WP_THEME_DIR_DEFAULT='postlight-headless-wp'
+HLWP_WP_THEME_NAME_DEFAULT='Postlight Headless WP Starter'
+HLWP_WP_DESC_DEFAULT='Just another (headless) WordPress site'
+HLWP_WP_DB_NAME_DEFAULT='wp_headless'
 
 # Log function
 _HLWP_LOG()
 {
-    local MESSAGE=$1
-    printf "${COLOR_BLUE}[HLWP]${NOCOLOR} ${MESSAGE}\n"
+    local HLWP_MESSAGE=$1
+    printf "${HLWP_COLOR_BLUE}[HLWP]${HLWP_COLOR_NONE} ${HLWP_MESSAGE}\n"
 }
-
-# Default config
-HLWP_DEFAULT_USER='my_wp_user'
-HLWP_DEFAULT_PASSWORD='thismightbeagoodpassword'
-HLWP_DEFAULT_EMAIL='my_email@mywebsite.com'
-HLWP_DEFAULT_THEME_DIR='postlight-headless-wp'
-HLWP_DEFAULT_THEME_NAME='Postlight Headless WP Starter'
-HLWP_DEFAULT_DESC='Just another (headless) WordPress site'
-HLWP_DEFAULT_DB_NAME='wp_headless'
 
 # Read config
 _HLWP_READ_CONFIG()
@@ -28,26 +28,26 @@ _HLWP_READ_CONFIG()
 
     echo
 
-    printf "   ${COLOR_YELLOW}Username:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_USER" HLWP_WP_USER
+    printf "   ${HLWP_COLOR_YELLOW}Username:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_USER_DEFAULT" HLWP_WP_USER
 
-    printf "   ${COLOR_YELLOW}Password:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_PASSWORD" HLWP_WP_PASSWORD
+    printf "   ${HLWP_COLOR_YELLOW}Password:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_PASSWORD_DEFAULT" HLWP_WP_PASSWORD
 
-    printf "   ${COLOR_YELLOW}Email:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_EMAIL" HLWP_WP_EMAIL
+    printf "   ${HLWP_COLOR_YELLOW}Email:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_EMAIL_DEFAULT" HLWP_WP_EMAIL
 
-    printf "   ${COLOR_YELLOW}Theme directory:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_THEME_DIR" HLWP_WP_THEME_DIR
+    printf "   ${HLWP_COLOR_YELLOW}Theme directory:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_THEME_DIR_DEFAULT" HLWP_WP_THEME_DIR
 
-    printf "   ${COLOR_YELLOW}Theme name:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_THEME_NAME" HLWP_WP_THEME_NAME
+    printf "   ${HLWP_COLOR_YELLOW}Theme name:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_THEME_NAME_DEFAULT" HLWP_WP_THEME_NAME
 
-    printf "   ${COLOR_YELLOW}Description:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_DESC" HLWP_WP_DESC
+    printf "   ${HLWP_COLOR_YELLOW}Description:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_DESC_DEFAULT" HLWP_WP_DESC
 
-    printf "   ${COLOR_YELLOW}Database name:${NOCOLOR} "
-    read -e -i "$HLWP_DEFAULT_DB_NAME" HLWP_WP_DB_NAME
+    printf "   ${HLWP_COLOR_YELLOW}Database name:${HLWP_COLOR_NONE} "
+    read -e -i "$HLWP_WP_DB_NAME_DEFAULT" HLWP_WP_DB_NAME
 
     echo
 }
@@ -56,18 +56,18 @@ _HLWP_READ_CONFIG()
 _HLWP_UNSET_VARIABLES()
 {
     # Misc
-    unset COLOR_BLUE
-    unset COLOR_YELLOW
-    unset NOCOLOR
+    unset HLWP_COLOR_BLUE
+    unset HLWP_COLOR_YELLOW
+    unset HLWP_COLOR_NONE
 
     # Default data
-    unset HLWP_DEFAULT_USER
-    unset HLWP_DEFAULT_PASSWORD
-    unset HLWP_DEFAULT_EMAIL
-    unset HLWP_DEFAULT_THEME_DIR
-    unset HLWP_DEFAULT_THEME_NAME
-    unset HLWP_DEFAULT_DESC
-    unset HLWP_DEFAULT_DB_NAME
+    unset HLWP_WP_USER_DEFAULT
+    unset HLWP_WP_PASSWORD_DEFAULT
+    unset HLWP_WP_EMAIL_DEFAULT
+    unset HLWP_WP_THEME_DIR_DEFAULT
+    unset HLWP_WP_THEME_NAME_DEFAULT
+    unset HLWP_WP_DESC_DEFAULT
+    unset HLWP_WP_DB_NAME_DEFAULT
 
     # Input data
     unset HLWP_WP_USER
