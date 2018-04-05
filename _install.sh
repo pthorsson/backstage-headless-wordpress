@@ -1,6 +1,9 @@
 #!/bin/sh
 . ./library.sh
 
+# Check that the needed dependencies are
+_HLWP_CHECK_PREREQUISITES
+
 # Display and input for setup config
 _HLWP_READ_CONFIG
 
