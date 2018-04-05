@@ -1,6 +1,7 @@
 #!/bin/sh
 . ./library.sh
 
+# Display and input for setup config
 _HLWP_READ_CONFIG
 
 # New install file
