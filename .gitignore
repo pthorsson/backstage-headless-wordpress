@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 wordpress/
 wp-cli.phar
+error.log
