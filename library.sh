@@ -23,6 +23,7 @@ _HLWP_UNSET_VARIABLES()
     unset -f _HLWP_KILL_IF_ERROR
     unset -f _HLWP_CHECK_PREREQUISITES
     unset -f _HLWP_READ_CONFIG
+    unset -f _HLWP_WP_CLI
     unset -f _HLWP_LIST_PLUGINS
     unset -f _HLWP_UNSET_VARIABLES
 }
@@ -55,9 +56,9 @@ _HLWP_COLOR()
 _HLWP_WP_DEFAULT()
 {
     case $1 in
-        user)           printf "my_wp_user" ;;
-        password)       printf "thismightbeagoodpassword" ;;
-        email)          printf "my_email@mywebsite.com" ;;
+        user)           printf "barryallen" ;;
+        password)       printf "iamthefastestmanalive" ;;
+        email)          printf "barryallen@starlabs.com" ;;
         dbhost)         printf "localhost" ;;
         dbuser)         printf "hlwp-test" ;;
         dbuserpassword) printf "qwerty" ;;
@@ -96,7 +97,7 @@ _HLWP_KILL_IF_ERROR()
 # Description
 _HLWP_CHECK_PREREQUISITES()
 {
-    rm error.log
+    rm -f error.log
     echo "_HLWP_CHECK_PREREQUISITES goes here"
 }
 
@@ -179,6 +180,12 @@ _HLWP_READ_CONFIG()
         done
         
     done
+}
+
+_HLWP_WP_CLI()
+{
+    rm -f error.log
+    eval "php wp-cli.phar --path='wordpress' $1"
 }
 
 _HLWP_LIST_PLUGINS()
