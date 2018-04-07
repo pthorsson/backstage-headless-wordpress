@@ -41,8 +41,16 @@ _HLWP_KILL_IF_ERROR "Could not create a new database"
 
 # WP-CLI - Install WordPress
 _HLWP_LOG "Running WordPress installation process ..."
-_HLWP_WP_CLI "core install --url=localhost:8080 --title='$(_HLWP_WP_DEFAULT themename)' --admin_user='$HLWP_WP_USER' --admin_password='$HLWP_WP_PASSWORD' --admin_email='$HLWP_WP_EMAIL' --skip-email"  2> error.log
+_HLWP_WP_CLI "core install --url='http://localhost:9000' --title='$(_HLWP_WP_DEFAULT themename)' --admin_user='$HLWP_WP_USER' --admin_password='$HLWP_WP_PASSWORD' --admin_email='$HLWP_WP_EMAIL' --skip-email"  2> error.log
 _HLWP_KILL_IF_ERROR "Could complete WordPress installation"
+
+# BUG: If the path to the wordpress installation contains a ".",
+#      the siteurl and home will become corrupted. Though it works
+#      if we use the wp-cli "option update" on siteurl and home.
+
+# WP-CLI - Sets siteurl and home again
+_HLWP_WP_CLI "option update home 'http://localhost:9000'"
+_HLWP_WP_CLI "option update siteurl 'http://localhost:9000'"
 
 # WP-CLI - Delete unnecessary files
 _HLWP_LOG "Deleting unnecessary files ..."
