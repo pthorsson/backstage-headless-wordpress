@@ -192,7 +192,7 @@ _HLWP_LIST_PLUGINS()
 
     for plugin in "./wordpress/wp-content/plugins"/*; do
         plugin=${plugin%*/}
-        if [ ${plugin##*/} != "index.php" && ${plugin##*/} != "filter-endpoints" ]; then
+        if [[ ${plugin##*/} != "index.php" && ${plugin##*/} != "filter-endpoints" ]]; then
             PLUGINS="$PLUGINS ${plugin##*/}"
         fi
 
@@ -201,3 +201,5 @@ _HLWP_LIST_PLUGINS()
 
     echo $PLUGINS
 }
+
+_HLWP_LIST_PLUGINS
