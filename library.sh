@@ -106,8 +106,7 @@ _HLWP_READ_CONFIG()
 {
     HLWP_CONFIG_STATUS=0;
 
-    while [ $HLWP_CONFIG_STATUS == 0 ]
-    do
+    while [ $HLWP_CONFIG_STATUS == 0 ]; do
         _HLWP_LOG "Installation config"
 
         echo
@@ -148,8 +147,7 @@ _HLWP_READ_CONFIG()
 
         HLWP_CONFIG_CONFIRM_STATUS=0;
 
-        while [ $HLWP_CONFIG_CONFIRM_STATUS == 0 ]
-        do
+        while [ $HLWP_CONFIG_CONFIRM_STATUS == 0 ]; do
 
             printf "   Is the data above correct? ($(_HLWP_COLOR lightgreen)y$(_HLWP_COLOR) = Yes, continue / $(_HLWP_COLOR yellow)n$(_HLWP_COLOR) = No, edit config / $(_HLWP_COLOR lightred)c$(_HLWP_COLOR) = Cancel installation) "
             read HLWP_CONFIG_COMPLETE
@@ -192,10 +190,9 @@ _HLWP_LIST_PLUGINS()
 {
     local PLUGINS=""
 
-    for plugin in "./wordpress/wp-content/plugins"/*
-    do
+    for plugin in "./wordpress/wp-content/plugins"/*; do
         plugin=${plugin%*/}
-        if [ ${plugin##*/} != "index.php" ]; then
+        if [ ${plugin##*/} != "index.php" && ${plugin##*/} != "filter-endpoints" ]; then
             PLUGINS="$PLUGINS ${plugin##*/}"
         fi
 
