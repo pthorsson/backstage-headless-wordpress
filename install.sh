@@ -70,7 +70,7 @@ _HLWP_KILL_IF_ERROR "Could not sync ACF"
 
 # WP-CLI - Rewrite structure
 _HLWP_LOG "Rewrite structure ..."
-_HLWP_WP_CLI "rewrite structure '/%year%/%monthnum%/%day%/%postname%/'" 2> error.log
+_HLWP_WP_CLI "rewrite structure '%year%/%monthnum%/%day%/%postname%/'" 2> error.log
 _HLWP_KILL_IF_ERROR "Could not edit rewrite structure"
 
 # WP-CLI - Adding some test data ...
