@@ -10,17 +10,17 @@ Author: Patrik Thorsson
 /**
  * Filter data with seleted fields
  */
-function _hlwp_filter_data($fields, $data) {
-    $filteredData = array();
+function _hlwp_filter_post($fields, $post) {
+    $filtered_post = array();
 
     // Adds property to filtered data if fields contains key.
-    foreach ( $data as $key => $value ) {
+    foreach ( $post as $key => $value ) {
         if ( in_array( $key, $fields ) ) {
-            $filteredData[$key] = $value;
+            $filtered_post[$key] = $value;
         }
     }
 
-    return $filteredData;
+    return $filtered_post;
 }
 
 /**
@@ -35,16 +35,16 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
     $post_type = in_array( $type, array( 'posts', 'post' ) ) ? 'post' : 'page';
 
     // Determines if to load one post or multiple.
-    $loadOne = in_array( $type, array( 'post', 'page' ) );
+    $load_one = in_array( $type, array( 'post', 'page' ) );
 
     // Determines if to filter fields or not.
-    $loadFullPosts = in_array( $context['full'], array( 'true', '1', 'yes' ) );
+    $load_full_post = in_array( $context['full'], array( 'true', '1', 'yes' ) );
 
     // Instantiates Wordpress REST posts controller.
-    $controller = new WP_REST_Posts_Controller( 'post' );
+    $posts_controller = new WP_REST_Posts_Controller( 'post' );
 
     // Container for filtered posts.
-    $filteredPosts = array();
+    $filtered_posts = array();
 
     // Fields to keep in filter.
     $fields = array( 'acf', 'slug', 'tags' );
@@ -55,7 +55,7 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
     );
 
     // Adds name selector to quest if single page/post.
-    if ( $loadOne ) {
+    if ( $load_one ) {
         $query['name'] = $context['name'];
     }
     
@@ -64,7 +64,7 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
 
     // Respond with an 404/empty array if nothing was found.
     if ( empty( $posts ) ) {
-        return $loadOne ? new WP_Error(
+        return $load_one ? new WP_Error(
             'Not found',
             $post_type . ' "' . $context['name'] . '" does not exist',
             array( 'status' => 404 )
@@ -73,17 +73,17 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
 
     // Run posts through wp REST posts controller and then filters fields.
     for ( $i = 0; $i < count($posts); $i++ ) { 
-        $data = $controller->prepare_item_for_response( $posts[$i], $request );
-        $post = $controller->prepare_response_for_collection( $data );
+        $data = $posts_controller->prepare_item_for_response( $posts[$i], $request );
+        $post = $posts_controller->prepare_response_for_collection( $data );
         
-        if ( in_array( $context['full'], array( 'true', '1', 'yes' ) ) ) {
-            array_push( $filteredPosts, $post );
+        if ( $load_full_post ) {
+            array_push( $filtered_posts, $post );
         } else {
-            array_push( $filteredPosts, _hlwp_filter_data( $fields, $post ) );
+            array_push( $filtered_posts, _hlwp_filter_post( $fields, $post ) );
         }
     }
 
-    return new WP_REST_Response( $loadOne ? $filteredPosts[0] : $filteredPosts );
+    return new WP_REST_Response( $load_one ? $filtered_posts[0] : $filtered_posts );
 }
 
 /**
