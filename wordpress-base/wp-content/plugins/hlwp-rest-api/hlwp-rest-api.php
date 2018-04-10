@@ -64,11 +64,11 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
 
     // Respond with an 404/empty array if nothing was found.
     if ( empty( $posts ) ) {
-		return $loadOne ? new WP_Error(
-			'Not found',
-			$post_type . ' "' . $context['name'] . '" does not exist',
-			array( 'status' => 404 )
-		) : array();
+        return $loadOne ? new WP_Error(
+            'Not found',
+            $post_type . ' "' . $context['name'] . '" does not exist',
+            array( 'status' => 404 )
+        ) : array();
     }
 
     // Run posts through wp REST posts controller and then filters fields.
@@ -135,37 +135,37 @@ add_action( 'rest_api_init', function() {
     // Register routes
 
     register_rest_route( $hlwp_namespace, '/post/(?P<name>.+)', array(
-		'methods'  => 'GET',
+        'methods'  => 'GET',
         'callback' => 'hlwp_get_post',
         'args' => array(
-			'full' => array_merge( $response_full, array( 'required' => false ) )
-		)
+            'full' => array_merge( $response_full, array( 'required' => false ) )
+        )
     ) );
 
-	register_rest_route( $hlwp_namespace, '/posts', array(
-		'methods'  => 'GET',
+    register_rest_route( $hlwp_namespace, '/posts', array(
+        'methods'  => 'GET',
         'callback' => 'hlwp_get_posts',
         'args' => array(
-			'full' => array_merge( $response_full, array( 'required' => false ) ),
-			'all' => array_merge( $response_full, array( 'required' => false ) )
-		)
+            'full' => array_merge( $response_full, array( 'required' => false ) ),
+            'all' => array_merge( $response_full, array( 'required' => false ) )
+        )
     ) );
 
     register_rest_route( $hlwp_namespace, '/page/(?P<name>.+)', array(
-		'methods'  => 'GET',
+        'methods'  => 'GET',
         'callback' => 'hlwp_get_page',
         'args' => array(
-			'full' => array_merge( $response_full, array( 'required' => false ) )
-		)
+            'full' => array_merge( $response_full, array( 'required' => false ) )
+        )
     ) );
 
     register_rest_route( $hlwp_namespace, '/pages', array(
-		'methods'  => 'GET',
+        'methods'  => 'GET',
         'callback' => 'hlwp_get_pages',
         'args' => array(
-			'full' => array_merge( $response_full, array( 'required' => false ) ),
-			'all' => array_merge( $response_full, array( 'required' => false ) )
-		)
+            'full' => array_merge( $response_full, array( 'required' => false ) ),
+            'all' => array_merge( $response_full, array( 'required' => false ) )
+        )
     ) );
 
 });
