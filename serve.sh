@@ -1,1 +1,0 @@
-php wp-cli.phar --path='wordpress' server --host=0.0.0.0 --port=9000
