@@ -26,7 +26,7 @@ function _hlwp_filter_post($fields, $post) {
 /**
  * Method for loading posts.
  */
-function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
+function _hlwp_get_posts( WP_REST_Request $context, $type, $fields ) {
 
     // Type of request.
     $type = in_array( $type, array( 'posts', 'post', 'pages', 'page' ) ) ? $type : 'posts';
@@ -92,7 +92,7 @@ function _hlwp_get_content( WP_REST_Request $context, $type, $fields ) {
 function hlwp_get_post( WP_REST_Request $context ) {
     $fields = array( 'acf', 'slug', 'tags' );
 
-    return _hlwp_get_content($context, 'post', $fields);
+    return _hlwp_get_posts($context, 'post', $fields);
 }
 
 /**
@@ -101,7 +101,7 @@ function hlwp_get_post( WP_REST_Request $context ) {
 function hlwp_get_posts( WP_REST_Request $context ) {
     $fields = array( 'acf', 'slug', 'tags' );
 
-    return _hlwp_get_content($context, 'posts', $fields);
+    return _hlwp_get_posts($context, 'posts', $fields);
 }
 
 /**
@@ -110,7 +110,7 @@ function hlwp_get_posts( WP_REST_Request $context ) {
 function hlwp_get_page( WP_REST_Request $context ) {
     $fields = array( 'acf', 'slug', 'tags' );
 
-    return _hlwp_get_content($context, 'page', $fields);
+    return _hlwp_get_posts($context, 'page', $fields);
 }
 
 /**
@@ -119,7 +119,7 @@ function hlwp_get_page( WP_REST_Request $context ) {
 function hlwp_get_pages( WP_REST_Request $context ) {
     $fields = array( 'acf', 'slug', 'tags' );
 
-    return _hlwp_get_content($context, 'pages', $fields);
+    return _hlwp_get_posts($context, 'pages', $fields);
 }
 
 /**
