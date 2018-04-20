@@ -3,3 +3,5 @@ npm-debug.log
 wordpress/
 wp-cli.phar
 error.log
+*.config.*
+lab

@@ -1,0 +1,28 @@
+{
+  "name": "wp-headless",
+  "version": "1.0.0",
+  "description": "A clone of Postlights headless wp starter repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pthorsson/wp-headless.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pthorsson/wp-headless/issues"
+  },
+  "homepage": "https://github.com/pthorsson/wp-headless#readme",
+  "devDependencies": {
+    "chalk": "^2.4.0",
+    "inquirer": "^5.2.0",
+    "node-fetch": "^2.1.2"
+  },
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "rimraf": "^2.6.2"
+  }
+}
