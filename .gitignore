@@ -4,4 +4,5 @@ wordpress/
 wp-cli.phar
 error.log
 *.config.*
+allowed-origins.json
 lab
