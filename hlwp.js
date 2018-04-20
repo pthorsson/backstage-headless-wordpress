@@ -7,11 +7,13 @@ const program = require('commander');
 const install = require('./lib/commands/install');
 const updateOrigin = require('./lib/commands/update-origin');
 const updatePlugin = require('./lib/commands/update-plugin');
+const server = require('./lib/commands/server');
 
 const runProgram = p => {
     if (p.install)      return install();
     if (p.updateOrigin) return updateOrigin();
     if (p.updatePlugin) return updatePlugin(p.updatePlugin);
+    if (p.server)       return server();
 
     p.help();
 };
@@ -21,6 +23,7 @@ program
     .option('-i, --install', 'preforms a headless WordPress intallation')
     .option('-o, --update-origin', 'updates front end origin')
     .option('-p, --update-plugin [plugin]', 'updates an plugin')
+    .option('-s, --server', 'runs a webserver server on http://localhost:9000')
     .parse(process.argv);
 
 runProgram(program);
