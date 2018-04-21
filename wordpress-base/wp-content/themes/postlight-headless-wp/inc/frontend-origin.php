@@ -13,4 +13,3 @@ function get_frontend_origin() {
 
 	return in_array($http_origin, $origins) ? $http_origin : $origins[0];
 }
-
