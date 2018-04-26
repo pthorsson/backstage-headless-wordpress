@@ -8,7 +8,7 @@ Author: Patrik Thorsson
 */
 
 /**
- * Filter data with seleted fields
+ * Filter data with seleted fields.
  */
 function _hlwp_filter_post($fields, $post) {
     $filtered_post = array();
@@ -26,19 +26,33 @@ function _hlwp_filter_post($fields, $post) {
 /**
  * Method for loading posts.
  */
-function _hlwp_get_posts( WP_REST_Request $context, $type, $fields ) {
+function hlwp_get_content( WP_REST_Request $context ) {
 
-    // Type of request.
-    $type = in_array( $type, array( 'posts', 'post', 'pages', 'page' ) ) ? $type : 'posts';
+    // Get content data.
+    $url_params = $context->get_url_params();
+    $query_params = $context->get_query_params();
 
-    // Establishes post type.
-    $post_type = in_array( $type, array( 'posts', 'post' ) ) ? 'post' : 'page';
+    // Post preferences.
+    $post_type = $url_params['type'];
+    $post_name = $url_params['name'];
 
-    // Determines if to load one post or multiple.
-    $load_one = in_array( $type, array( 'post', 'page' ) );
+    // Get available post types.
+    $available_post_types = get_post_types( array( 'public' => true ) );
+
+    // Respond with an 404/empty array if invalid post type.
+    if ( !$available_post_types[$post_type] ) {
+        return new WP_Error(
+            'Not found',
+            'Post type "' . $post_type . '" does not exist',
+            array( 'status' => 404 )
+        );
+    }
+
+    // Determines if load multiple or one.
+    $load_one = $url_params['name'] !== null;
 
     // Determines if to filter fields or not.
-    $load_full_post = in_array( $context['full'], array( 'true', '1', 'yes' ) );
+    $load_full_post = in_array( $query_params['full'], array( 'true', '1', 'yes' ) );
 
     // Instantiates Wordpress REST posts controller.
     $posts_controller = new WP_REST_Posts_Controller( 'post' );
@@ -56,7 +70,7 @@ function _hlwp_get_posts( WP_REST_Request $context, $type, $fields ) {
 
     // Adds name selector to quest if single page/post.
     if ( $load_one ) {
-        $query['name'] = $context['name'];
+        $query['name'] = $url_params['name'];
     }
     
     // Get posts.
@@ -66,7 +80,7 @@ function _hlwp_get_posts( WP_REST_Request $context, $type, $fields ) {
     if ( empty( $posts ) ) {
         return $load_one ? new WP_Error(
             'Not found',
-            $post_type . ' "' . $context['name'] . '" does not exist',
+            $post_type . ' "' . $url_params['name'] . '" does not exist',
             array( 'status' => 404 )
         ) : array();
     }
@@ -87,81 +101,23 @@ function _hlwp_get_posts( WP_REST_Request $context, $type, $fields ) {
 }
 
 /**
- * Get post
- */
-function hlwp_get_post( WP_REST_Request $context ) {
-    $fields = array( 'acf', 'slug', 'tags' );
-
-    return _hlwp_get_posts($context, 'post', $fields);
-}
-
-/**
- * Get posts
- */
-function hlwp_get_posts( WP_REST_Request $context ) {
-    $fields = array( 'acf', 'slug', 'tags' );
-
-    return _hlwp_get_posts($context, 'posts', $fields);
-}
-
-/**
- * Get page
- */
-function hlwp_get_page( WP_REST_Request $context ) {
-    $fields = array( 'acf', 'slug', 'tags' );
-
-    return _hlwp_get_posts($context, 'page', $fields);
-}
-
-/**
- * Get pages
- */
-function hlwp_get_pages( WP_REST_Request $context ) {
-    $fields = array( 'acf', 'slug', 'tags' );
-
-    return _hlwp_get_posts($context, 'pages', $fields);
-}
-
-/**
- * Add actions to wordpress
+ * Add actions to wordpress.
  */
 add_action( 'rest_api_init', function() {
 
     $hlwp_namespace = 'hlwp/v1';
-    
+
     $response_full = array_merge( array(), array( 'description' => 'Will return the non-stripped version of the data if set to true.' ) );
     $response_all = array_merge( array(), array( 'description' => 'Will return all items available if set to true.' ) );
 
     // Register routes
 
-    register_rest_route( $hlwp_namespace, '/post/(?P<name>.+)', array(
+    /**
+     * Universal route for loading one or multiple posts by type.
+     */
+    register_rest_route( $hlwp_namespace, '/content/(?P<type>[a-zA-Z0-9_-]+)(?:/(?P<name>[a-zA-Z0-9_\-=\(\)\[\]$.*+,;!~]+))?', array(
         'methods'  => 'GET',
-        'callback' => 'hlwp_get_post',
-        'args' => array(
-            'full' => array_merge( $response_full, array( 'required' => false ) )
-        )
-    ) );
-
-    register_rest_route( $hlwp_namespace, '/posts', array(
-        'methods'  => 'GET',
-        'callback' => 'hlwp_get_posts',
-        'args' => array(
-            'full' => array_merge( $response_full, array( 'required' => false ) ),
-            'all' => array_merge( $response_full, array( 'required' => false ) )
-        )
-    ) );
-
-    register_rest_route( $hlwp_namespace, '/page/(?P<name>.+)', array(
-        'methods'  => 'GET',
-        'callback' => 'hlwp_get_page',
-        'args' => array(
-            'full' => array_merge( $response_full, array( 'required' => false ) )
-        )
-    ) );
-
-    register_rest_route( $hlwp_namespace, '/pages', array(
-        'methods'  => 'GET',
-        'callback' => 'hlwp_get_pages',
+        'callback' => 'hlwp_get_content',
         'args' => array(
             'full' => array_merge( $response_full, array( 'required' => false ) ),
             'all' => array_merge( $response_full, array( 'required' => false ) )
