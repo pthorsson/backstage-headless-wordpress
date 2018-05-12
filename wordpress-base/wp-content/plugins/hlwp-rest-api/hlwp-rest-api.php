@@ -102,6 +102,10 @@ function hlwp_get_content( WP_REST_Request $context ) {
         $data = $posts_controller->prepare_item_for_response( $posts[$i], $request );
         $post = $posts_controller->prepare_response_for_collection( $data );
 
+        if (!$hlwp_is_user_logged_in) {
+            unset($post['status']);
+        }
+
         if ( $load_full_post ) {
             array_push( $filtered_posts, $post );
         } else {
