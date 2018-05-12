@@ -36,6 +36,9 @@ function hlwp_get_content( WP_REST_Request $context ) {
     $post_type = $url_params['type'];
     $post_name = $url_params['name'];
 
+    // Check if user is logged in
+    global $hlwp_is_user_logged_in;
+
     // Get available post types.
     $available_post_types = get_post_types( array( 'public' => true ) );
 
@@ -61,7 +64,11 @@ function hlwp_get_content( WP_REST_Request $context ) {
     $filtered_posts = array();
 
     // Fields to keep in filter.
-    $fields = array( 'acf', 'slug', 'tags' );
+    if ( $query_params['fields'] ) {
+        $fields = explode(' ', $query_params['fields']);
+    } else {
+        $fields = array( 'acf', 'slug', 'tags', 'status', 'content' );
+    }
 
     // Query to use in get_posts.
     $query = array(
@@ -71,6 +78,11 @@ function hlwp_get_content( WP_REST_Request $context ) {
     // Adds name selector to quest if single page/post.
     if ( $load_one ) {
         $query['name'] = $url_params['name'];
+    }
+
+    // Return all posts regardless of status is logged in.
+    if ( $hlwp_is_user_logged_in ) {
+        $query['post_status'] = $url_params['any'];
     }
     
     // Get posts.
@@ -89,7 +101,7 @@ function hlwp_get_content( WP_REST_Request $context ) {
     for ( $i = 0; $i < count($posts); $i++ ) { 
         $data = $posts_controller->prepare_item_for_response( $posts[$i], $request );
         $post = $posts_controller->prepare_response_for_collection( $data );
-        
+
         if ( $load_full_post ) {
             array_push( $filtered_posts, $post );
         } else {
@@ -107,7 +119,8 @@ add_action( 'rest_api_init', function() {
 
     $hlwp_namespace = 'hlwp/v1';
 
-    $response_full = array_merge( array(), array( 'description' => 'Will return the non-stripped version of the data if set to true.' ) );
+    $response_fields = array_merge( array(), array( 'description' => 'Will return selected fields.' ) );
+    $response_full = array_merge( array(), array( 'description' => 'Will return non-filtered data.' ) );
     $response_all = array_merge( array(), array( 'description' => 'Will return all items available if set to true.' ) );
 
     // Register routes
@@ -119,9 +132,18 @@ add_action( 'rest_api_init', function() {
         'methods'  => 'GET',
         'callback' => 'hlwp_get_content',
         'args' => array(
+            'fields' => array_merge( $response_fields, array( 'required' => false ) ),
             'full' => array_merge( $response_full, array( 'required' => false ) ),
             'all' => array_merge( $response_full, array( 'required' => false ) )
         )
     ) );
 
+});
+
+/**
+ * An ugly fix for accessing is_user_logged_in() in endpoint.
+ */
+add_action( 'rest_api_init', function() {
+    global $hlwp_is_user_logged_in;
+    $hlwp_is_user_logged_in = is_user_logged_in();
 });
