@@ -82,7 +82,7 @@ function hlwp_get_content( WP_REST_Request $context ) {
 
     // Return all posts regardless of status is logged in.
     if ( $hlwp_is_user_logged_in ) {
-        $query['post_status'] = $url_params['any'];
+        $query['post_status'] = 'any';
     }
     
     // Get posts.
