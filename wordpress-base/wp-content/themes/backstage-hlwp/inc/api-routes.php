@@ -37,7 +37,7 @@ function hlwp_get_content( WP_REST_Request $context ) {
     $post_name = $url_params['name'];
 
     // Check if user is logged in
-    global $hlwp_is_user_logged_in;
+    global $hlwp_preview_mode;
 
     // Get available post types.
     $available_post_types = get_post_types( array( 'public' => true ) );
@@ -81,7 +81,7 @@ function hlwp_get_content( WP_REST_Request $context ) {
     }
 
     // Return all posts regardless of status is logged in.
-    if ( $hlwp_is_user_logged_in ) {
+    if ( $hlwp_preview_mode ) {
         $query['post_status'] = 'any';
     }
     
@@ -102,9 +102,11 @@ function hlwp_get_content( WP_REST_Request $context ) {
         $data = $posts_controller->prepare_item_for_response( $posts[$i], $request );
         $post = $posts_controller->prepare_response_for_collection( $data );
 
-        if (!$hlwp_is_user_logged_in) {
+        if (!$hlwp_preview_mode) {
             unset($post['status']);
         }
+
+        $post['HTTP_X_HLWP_PREVIEW_TOKEN'] = $_SERVER['HTTP_X_HLWP_PREVIEW_TOKEN'];
 
         if ( $load_full_post ) {
             array_push( $filtered_posts, $post );
@@ -148,6 +150,6 @@ add_action( 'rest_api_init', function() {
  * An ugly fix for accessing is_user_logged_in() in endpoint.
  */
 add_action( 'rest_api_init', function() {
-    global $hlwp_is_user_logged_in;
-    $hlwp_is_user_logged_in = is_user_logged_in();
+    global $hlwp_preview_mode;
+    $hlwp_preview_mode = wp_verify_nonce( $_SERVER['HTTP_X_HLWP_PREVIEW_TOKEN'], 'hlwp_content_preview' );
 });
