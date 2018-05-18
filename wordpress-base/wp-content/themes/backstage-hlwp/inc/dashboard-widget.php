@@ -10,7 +10,7 @@ function hlwp_preview_link_widget() {
         'hlwp_preview_link',                 // Widget slug.
         'Backstage HLWP - Content preview',  // Title.
         'hlwp_preview_link_function'         // Display function.
-    );	
+    );
 }
 
 add_action( 'wp_dashboard_setup', 'hlwp_preview_link_widget' );

@@ -6,7 +6,7 @@ Description: Filter Endpoints
 Author: Patrik Thorsson
 */
 
-function hlwp_filter_endpoints($endpoint) {
+function hlwp_is_visible($endpoint) {
     $visibleEndpoints = [
         "/",
         "/*",
@@ -26,13 +26,29 @@ function hlwp_filter_endpoints($endpoint) {
     return false;
 }
 
-add_filter( 'rest_endpoints', function($endpoints) {
+// add_filter( 'rest_endpoints', function($endpoints) {
+//     foreach ( $endpoints as $path => $cb ) {
+//         if (!hlwp_is_visible($path)) {
+            
+//             // unset($endpoints[$path]);
+//         }
+//     }
+//     return $endpoints;
+// });
 
-    foreach ( $endpoints as $path => $cb ) {
-        if (!hlwp_filter_endpoints($path)) {
-            unset($endpoints[$path]);
-        }
-    }
+add_action('admin_menu', 'hlwp_endpoint_filter');
 
-    return $endpoints;
-});
+class HLWPEndpointFilter {
+
+}
+ 
+function hlwp_endpoint_filter(){
+    add_menu_page( 'Filter endpoints page', 'Filter endpoints', 'manage_options', 'filter-endpoints-plugin', 'hlwp_endpoint_filter_init' );
+}
+ 
+function hlwp_endpoint_filter_init() {
+?>
+    <h2>Endpoint filter</h2>
+    <p>Here you can filter which endpoints to expose in the API.</p>
+<?php
+}
