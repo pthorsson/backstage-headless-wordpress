@@ -68,10 +68,10 @@ class BackstageAjax {
     private function cors_post() {
         global $backstage_config;
 
-        $data = $_POST;
+        $data = array();
 
-        $data['enabled'] = ($data['enabled'] === 'true');
-        $data['origins'] = isset($data['origins']) ? $data['origins'] : array();
+        $data['enabled'] = ($_POST['enabled'] === 'true');
+        $data['origins'] = isset($_POST['origins']) ? $_POST['origins'] : array();
 
         $backstage_config->save( 'cors', $data );
 

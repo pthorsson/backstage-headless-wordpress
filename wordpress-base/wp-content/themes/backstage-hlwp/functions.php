@@ -4,7 +4,7 @@
 // require_once( 'inc/backstage.php' );
 
 // Frontend origin
-require_once( 'inc/frontend-origin.php' );
+// require_once( 'inc/frontend-origin.php' );
 
 // ACF commands
 require_once( 'inc/class-acf-commands.php' );
@@ -13,7 +13,7 @@ require_once( 'inc/class-acf-commands.php' );
 require_once( 'inc/log.php' );
 
 // CORS handling
-require_once( 'inc/cors.php' );
+// require_once( 'inc/cors.php' );
 
 // Admin modifications
 require_once( 'inc/admin.php' );

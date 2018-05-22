@@ -7,6 +7,11 @@
 		<hr>
 	</p>
 
+	<p class="backstage_spinner">
+		<span>Loading</span>
+		<div class="spinner"></div>
+	</p>
+
 	<label>
 		<input name="enable_cors" id="enable_cors" class="bs-hook_enable-cors-check" type="checkbox" value="custom">
 		<b>Enable CORS</b>

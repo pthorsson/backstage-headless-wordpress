@@ -5,10 +5,10 @@ function backstage_admin_page_cors() {
 	    wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     }
 
-    wp_enqueue_script( 'backstage-lib' );
-    wp_enqueue_script( 'backstage-cors' );
+    global $backstage;
 
-    wp_enqueue_style( 'backstage-cors' );
+    $backstage->enqueue_scripts( array( 'backstage-cors' ) );
+    $backstage->enqueue_styles( array( 'backstage-cors' ) );
 
     require_once( 'views/html_cors.php' );
 }

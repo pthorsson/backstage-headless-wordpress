@@ -5,10 +5,10 @@ function backstage_admin_page_endpoints() {
 	    wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     }
 
-    wp_enqueue_script( 'backstage-lib' );
-    wp_enqueue_script( 'backstage-endpoints' );
+    global $backstage;
 
-    wp_enqueue_style( 'backstage-endpoints' );
+    $backstage->enqueue_scripts( array( 'backstage-endpoints' ) );
+    $backstage->enqueue_styles( array( 'backstage-endpoints' ) );
 
     require_once( 'views/html_endpoints.php' );
 }
