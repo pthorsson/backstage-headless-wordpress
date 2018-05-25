@@ -127,11 +127,29 @@ class BackstageEndpoints {
             if ( $load_full_post ) {
                 array_push( $filtered_posts, $post );
             } else {
-                array_push( $filtered_posts, _hlwp_filter_post( $fields, $post ) );
+                array_push( $filtered_posts, $this->filter_posts( $fields, $post ) );
             }
         }
 
         return new WP_REST_Response( $load_one ? $filtered_posts[0] : $filtered_posts );
+
+    }
+
+    /**
+     * Filter data with seleted fields.
+     */
+    private function filter_post($fields, $post) {
+
+        $filtered_post = array();
+
+        // Adds property to filtered data if fields contains key.
+        foreach ( $post as $key => $value ) {
+            if ( in_array( $key, $fields ) ) {
+                $filtered_post[$key] = $value;
+            }
+        }
+
+        return $filtered_post;
 
     }
 }
