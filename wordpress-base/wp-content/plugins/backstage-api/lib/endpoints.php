@@ -138,7 +138,7 @@ class BackstageEndpoints {
     /**
      * Filter data with seleted fields.
      */
-    private function filter_post($fields, $post) {
+    private function filter_posts($fields, $post) {
 
         $filtered_post = array();
 
