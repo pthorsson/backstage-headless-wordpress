@@ -32,6 +32,7 @@ class Backstage {
 
         // Backstage modules
         $this->include_module( 'lib/config.php' );
+        $this->include_module( 'lib/endpoints.php' );
 
         if ( is_admin() && current_user_can( 'manage_options' ) ) {
 
