@@ -1,5 +1,14 @@
-.backstage-spinner .spinner {
-    margin-left: 10px;
+.bs_admin-loading .spinner {
+    margin-left: 5px;
+    margin-top: 0;
     float: none;
-    visibility: show;
+    visibility: visible;
+}
+
+.bs__status-message_error {
+    color: #e44d4d;
+}
+
+.bs__status-message_success {
+    color: #3a943a;
 }

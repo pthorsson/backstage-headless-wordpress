@@ -18,12 +18,12 @@ add_filter( 'wp_terms_checklist_args', 'taxonomy_checklist_checked_ontop_filter'
  * @param  str $link The WordPress preview link.
  * @return str The headless WordPress preview link.
  */
-function set_headless_preview_link( $link ) {
-	return get_frontend_origin() . '/'
-		. '_preview/'
-		. get_the_ID() . '/'
-		. wp_create_nonce( 'wp_rest' );
-}
+// function set_headless_preview_link( $link ) {
+// 	return get_frontend_origin() . '/'
+// 		. '_preview/'
+// 		. get_the_ID() . '/'
+// 		. wp_create_nonce( 'wp_rest' );
+// }
 
-add_filter( 'preview_post_link', 'set_headless_preview_link' );
+// add_filter( 'preview_post_link', 'set_headless_preview_link' );
 

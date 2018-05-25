@@ -1,11 +1,3 @@
 .bs-cors__table {
     
 }
-
-.bs-cors__status-message_error {
-    color: #e44d4d;
-}
-
-.bs-cors__status-message_success {
-    color: #3a943a;
-}

@@ -42,9 +42,10 @@ class Backstage {
             // Backstage admin modules
             $this->include_module( 'lib/ajax.php' );
     
-            // Admin pages
+            // Admin UI
             $this->include_module( 'admin-pages/page_cors.php' );
             $this->include_module( 'admin-pages/page_endpoints.php' );
+            $this->include_module( 'admin-pages/widget_preview.php' );
 
         } else if ( !is_admin() ) {
 
@@ -88,25 +89,25 @@ class Backstage {
     public function register_assets() {
 
         // Scripts
-        wp_register_script( 'backstage', $this->file('admin-pages/js/backstage.js'), array('jquery'), $this->version );
-        wp_register_script( 'backstage-cors', $this->file('admin-pages/js/backstage-cors.js'), array('jquery'), $this->version );
-        wp_register_script( 'backstage-endpoints', $this->file('admin-pages/js/backstage-endpoints.js'), array('jquery'), $this->version );
+        wp_register_script( 'backstage', $this->file( 'admin-pages/js/backstage.js' ), array( 'jquery', 'underscore' ), $this->version );
+        wp_register_script( 'backstage-cors', $this->file( 'admin-pages/js/backstage-cors.js' ), array( 'jquery', 'underscore' ), $this->version );
+        wp_register_script( 'backstage-endpoints', $this->file( 'admin-pages/js/backstage-endpoints.js' ), array( 'jquery', 'underscore' ), $this->version );
 
         // Styles
-        wp_register_style( 'backstage', $this->file('admin-pages/css/backstage.css'), false, $this->version );
-        wp_register_style( 'backstage-cors', $this->file('admin-pages/css/backstage-cors.css'), false, $this->version );
-        wp_register_style( 'backstage-endpoints', $this->file('admin-pages/css/backstage-endpoints.css'), false, $this->version );
+        wp_register_style( 'backstage', $this->file( 'admin-pages/css/backstage.css' ), false, $this->version );
+        wp_register_style( 'backstage-cors', $this->file( 'admin-pages/css/backstage-cors.css' ), false, $this->version );
+        wp_register_style( 'backstage-endpoints', $this->file( 'admin-pages/css/backstage-endpoints.css' ), false, $this->version );
 
     }
 
     /**
      * Enqueue scripts
      */
-    public function enqueue_scripts($scripts) {
+    public function enqueue_scripts( $scripts ) {
 
         wp_enqueue_script( 'backstage' );
 
-        for ($i = 0; $i < count($scripts); $i++) { 
+        for ($i = 0; $i < count( $scripts ); $i++) { 
             wp_enqueue_script( $scripts[$i] );
         }
 
@@ -115,11 +116,11 @@ class Backstage {
     /**
      * Enqueue style
      */
-    public function enqueue_styles($styles) {
+    public function enqueue_styles( $styles ) {
 
         wp_enqueue_style( 'backstage' );
 
-        for ($i = 0; $i < count($styles); $i++) { 
+        for ($i = 0; $i < count( $styles ); $i++) { 
             wp_enqueue_style( $styles[$i] );
         }
 
@@ -127,14 +128,10 @@ class Backstage {
 
     private function set_cors() {
 
-        /**
-         * Allow GET requests from * origin
-         * Thanks to https://joshpress.net/access-control-headers-for-the-wordpress-rest-api/
-         */
         add_action( 'rest_api_init', function() {
 
             global $backstage_config;
-            $options = $backstage_config->load('cors');
+            $options = $backstage_config->load( 'cors' );
 
             if ( $options['enabled'] ) {
 
@@ -166,12 +163,28 @@ class Backstage {
                 });
             }
 
-
         }, 15 );
 
     }
 
     private function set_exposed_endpoints() {
+
+        add_filter( 'rest_endpoints', function($endpoints) {
+
+            global $backstage_config;
+            $options = $backstage_config->load( 'endpoints' );
+
+            if ( $options['enabled'] ) {
+                foreach ( $endpoints as $path => $cb ) {
+                    if ( !in_array( $path, $options['exposed'] ) ) {
+                        unset( $endpoints[$path] );
+                    }
+                }
+            }
+            
+            return $endpoints;
+
+        });
 
     }
 
@@ -181,7 +194,8 @@ function backstage() {
 	global $backstage;
 
 	if( !isset($backstage) ) {
-		$backstage = new Backstage();
+        $backstage = new Backstage();
+        // $backstage->init();
         add_action( 'init', array( $backstage, 'init' ) );
 	}
 

@@ -52,7 +52,7 @@ class BackstageAjax {
     }
 
     /**
-     * [Response] CORS GET request
+     * [Endpoint action] CORS GET request
      */
     private function cors_get() {
         global $backstage_config;
@@ -63,15 +63,15 @@ class BackstageAjax {
     }
 
     /**
-     * [Response] CORS POST request
+     * [Endpoint action] CORS POST request
      */
     private function cors_post() {
         global $backstage_config;
 
         $data = array();
 
-        $data['enabled'] = ($_POST['enabled'] === 'true');
-        $data['origins'] = isset($_POST['origins']) ? $_POST['origins'] : array();
+        $data['enabled'] = ( $_POST['enabled'] === 'true' );
+        $data['origins'] = isset( $_POST['origins'] ) ? $_POST['origins'] : array();
 
         $backstage_config->save( 'cors', $data );
 
@@ -79,18 +79,66 @@ class BackstageAjax {
     }
 
     /**
-     * [Response] Endpoints GET request
+     * [Endpoint action] Endpoints GET request
      */
     private function endpoints_get() {
-        $data = array( 'omg' => 'endpoints_get' );
+        global $backstage_config;
+
+        $data = $backstage_config->load( 'endpoints' );
+
+        $data['enabled'] = !isset( $data['enabled'] ) ? false   : $data['enabled'];
+        $data['exposed'] = !isset( $data['exposed'] ) ? array() : $data['exposed'];
+
+        $allEndpoints = array();
+
+        foreach ( rest_get_server()->get_routes() as $route => $settings) {
+
+            $endpoint = array(
+                'endpoint' => $route,
+                'methods' => array()
+            );
+
+            for ( $i = 0; $i < count( $settings ); $i++ ) {
+                $methodCount = 0;
+                $method = '';
+
+                foreach ( $settings[$i]['methods'] as $methodType => $methodEnabled ) {
+
+                    if ( $methodEnabled ) {
+                        $method .= ( $methodCount === 0 ? $methodType : '/' . $methodType );
+                    }
+
+                    $methodCount++;
+                }
+
+                array_push( $endpoint['methods'], $method );
+            }
+
+            array_push( $allEndpoints, $endpoint );
+        }
+        
+        $data = array(
+            'enabled' => $data['enabled'],
+            'exposed' => $data['exposed'],
+            'all' => $allEndpoints
+        );
+
         wp_send_json( $data, 200 );
     }
 
     /**
-     * [Response] Endpoints POST request
+     * [Endpoint action] Endpoints POST request
      */
     private function endpoints_post() {
-        $data = array( 'omg' => 'endpoints_post' );
+        global $backstage_config;
+
+        $data = array();
+
+        $data['enabled'] = ( $_POST['enabled'] === 'true' );
+        $data['exposed'] = isset( $_POST['exposed'] ) ? wp_unslash( $_POST['exposed'] ) : array();
+
+        $backstage_config->save( 'endpoints', $data );
+
         wp_send_json( $data, 200 );
     }
 

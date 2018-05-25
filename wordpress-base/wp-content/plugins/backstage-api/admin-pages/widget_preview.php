@@ -5,20 +5,22 @@
  *
  * This function is hooked into the 'wp_dashboard_setup' action below.
  */
-function hlwp_preview_link_widget() {
+function backstage_admin_widget_preview() {
 	wp_add_dashboard_widget(
-        'hlwp_preview_link',                 // Widget slug.
-        'Backstage HLWP - Content preview',  // Title.
-        'hlwp_preview_link_function'         // Display function.
+        'backstage_preview_widget',               // Widget slug.
+        'Backstage API - Preview mode',           // Title.
+        'backstage_admin_widget_preview_function' // Display function.
     );
 }
 
-add_action( 'wp_dashboard_setup', 'hlwp_preview_link_widget' );
+add_action( 'wp_dashboard_setup', 'backstage_admin_widget_preview' );
 
 /**
  * Create the function to output the contents of our Dashboard Widget.
  */
-function hlwp_preview_link_function() {
+function backstage_admin_widget_preview_function() {
+    global $backstage_config;
+
     $restNonce = wp_create_nonce( 'wp_rest' );
 
     ?>
