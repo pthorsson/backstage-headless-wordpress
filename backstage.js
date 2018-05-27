@@ -12,7 +12,7 @@ const server = require('./lib/commands/server');
 const runProgram = p => {
     if (p.install)      return install();
     if (p.updatePlugin) return updatePlugin(p.updatePlugin);
-    if (p.updateTheme)  return updateTheme('backstage-hlwp');
+    if (p.updateTheme)  return updateTheme('backstage-headless');
     if (p.server)       return server();
 
     p.help();
@@ -20,7 +20,7 @@ const runProgram = p => {
 
 program
     .version('1.0.0', '-v, --version')
-    .option('-i, --install', 'preforms a headless WordPress intallation')
+    .option('-i, --install', 'preforms a WordPress intallation')
     .option('-p, --update-plugin [plugin]', 'updates an plugin')
     .option('-t, --update-theme', 'updates the theme')
     .option('-s, --server', 'runs a webserver server on http://localhost:9000')
