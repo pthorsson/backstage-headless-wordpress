@@ -1,29 +1,27 @@
 {
-  "name": "wp-headless",
+  "name": "backstage-headless-wordpress",
   "version": "1.0.0",
   "description": "A clone of Postlights headless wp starter repo",
-  "main": "index.js",
+  "main": "backstage.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pthorsson/wp-headless.git"
+    "url": "git+https://github.com/pthorsson/backstage-headless-wordpress.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pthorsson/wp-headless/issues"
+    "url": "https://github.com/pthorsson/backstage-headless-wordpress/issues"
   },
-  "homepage": "https://github.com/pthorsson/wp-headless#readme",
-  "devDependencies": {
+  "homepage": "https://github.com/pthorsson/backstage-headless-wordpress#readme",
+  "dependencies": {
     "chalk": "^2.4.0",
     "commander": "^2.15.1",
-    "inquirer": "^5.2.0",
-    "node-fetch": "^2.1.2"
-  },
-  "dependencies": {
     "fs-extra": "^5.0.0",
+    "inquirer": "^5.2.0",
+    "node-fetch": "^2.1.2",
     "rimraf": "^2.6.2"
   }
 }
