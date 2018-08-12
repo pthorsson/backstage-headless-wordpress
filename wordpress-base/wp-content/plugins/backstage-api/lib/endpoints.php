@@ -124,6 +124,8 @@ class BackstageEndpoints {
                 unset($post['status']);
             }
 
+            $post['post_content_filtered'] = $posts[$i]->post_content_filtered;
+
             if ( $load_full_post ) {
                 array_push( $filtered_posts, $post );
             } else {
